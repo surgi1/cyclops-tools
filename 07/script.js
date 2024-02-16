@@ -38,24 +38,24 @@ const vig = (text, key, mode = MODE.ENCODE) => {
 }
 
 const initDictionary = (checkPlain = true, checkReversed = true) => {
-    let o = new Set(), _o = new Set();
+    let o = new Set(), _o = new Set(), cia = new Set(), w = [...words];
 
-    // add codenames
-    dict.forEach(v => words.push(v))
+    // compile codenames and cryptonyms
+    [...dict, Object.keys(cryptonyms)].forEach(v => {
+        cia.add(v);
+        w.push(v);
+    });
 
-    // add cryptonyms
-    Object.keys(cryptonyms).forEach(v => words.push(v))
-
-    if (checkPlain) words
+    if (checkPlain) w
         .filter(v => v.length <= 9)
         .forEach(v => o.add(v))
 
-    if (checkReversed) words
+    if (checkReversed) w
         .filter(v => v.length <= 9)
         .forEach(v => _o.add(reverse(v)));
 
     console.log('active dictionary size', o.size + _o.size);
-    return {plain: o, reversed: _o}
+    return {plain: o, reversed: _o, cia: cia}
 }
 
 const initVariants = groups => {
@@ -79,8 +79,9 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
     let variants = initVariants(groups);
     let found = 0, wordLen = variants[0].length;
 
-    const logWord = (s, v, n, note1 = '', note2 = '') => {
-        console.log(s, '[', v, n, ']', note1, note2);
+    const logWord = (s, v, n, words, note1 = '', note2 = '') => {
+        let note3 = words.some(w => dictionary.cia.has(w)) ? 'CRYPTONYM PRESENT' : '';
+        console.log(s, '[', v, n, ']', note1, note2, note3);
         found++;
         return true;
     }
@@ -92,8 +93,8 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
         variants.forEach(v => {
             let t = rot(v, 26 - n, mode);
             let skip = false;
-            if (dictionary.plain.has(t)) skip = logWord(t, v, n);
-            if (dictionary.reversed.has(t)) skip = logWord(reverse(t), v, n, 'reverse match');
+            if (dictionary.plain.has(t)) skip = logWord(t, v, n, [t]);
+            if (dictionary.reversed.has(t)) skip = logWord(reverse(t), v, n, [reverse(t)], 'reverse match');
             if (skip) return true;
 
             if (!tuples || wordLen < 6) return true;
@@ -102,8 +103,8 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
                 let w2len = wordLen - w1len;
                 let w1 = t.substr(0, w1len), w2 = t.substr(w1len, w2len);
                 skip = false;
-                if (dictionary.plain.has(w1) && dictionary.plain.has(w2)) skip = logWord(t, v, n, '', `tuple (${w1len}, ${w2len})`);
-                if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2)) skip = logWord(reverse(t), v, n, 'reverse match', `tuple (${w1len}, ${w2len})`);
+                if (dictionary.plain.has(w1) && dictionary.plain.has(w2)) skip = logWord(t, v, n, [w1, w2], '', `tuple (${w1len}, ${w2len})`);
+                if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2)) skip = logWord(reverse(t), v, n, [reverse(w1), reverse(w2)], 'reverse match', `tuple (${w1len}, ${w2len})`);
                 if (skip) return true;
             }
 
