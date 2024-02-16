@@ -41,7 +41,7 @@ const initDictionary = (checkPlain = true, checkReversed = true) => {
     let o = new Set(), _o = new Set(), cia = new Set(), w = [...words];
 
     // compile codenames and cryptonyms
-    [...dict, Object.keys(cryptonyms)].forEach(v => {
+    cryptonyms.forEach(v => {
         cia.add(v);
         w.push(v);
     });
