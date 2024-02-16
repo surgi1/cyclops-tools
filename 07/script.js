@@ -125,8 +125,8 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
 
 // describe the word we're looking for by letter groups applicable for individual letters
 let groups = [
-    //FAMILY.F, ['O'], FAMILY.B, FAMILY.F, FAMILY.B, ['I']    // FOBSDI -> VERITY
-    //FAMILY.B, FAMILY.B, ['Y'], ['Y'], FAMILY.B, ['Y']     // CTYYZY -> MIRROR
+    //FAMILY.F, ['O'], FAMILY.B, FAMILY.F, FAMILY.B, ['I']    // FOBSPI -> VERITY
+    //FAMILY.B, FAMILY.B, ['Y'], ['Y'], FAMILY.B, ['Y']     // TPYYVY -> MIRROR
     //FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.VZ  // FVFKFJCTV
     //FAMILY.F, FAMILY.B, FAMILY.F, FAMILY.A_REDUCED, FAMILY.F, ['J'], FAMILY.B, FAMILY.B, FAMILY.B_REDUCED  // FVFKFJCTV wide search
     FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.B_REDUCED  // FVFKFJCTV
