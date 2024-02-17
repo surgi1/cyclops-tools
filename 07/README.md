@@ -19,7 +19,7 @@ run([
     reversed: true,         // allow reversed words (**verify the mirror** they say), default: true
     tuples: true,           // search wlaso for word tuples, e.g. redbadger, purplefox, default: false
     unprefixCryptonyms: true, // add also cryptonyms stripped of their prefixes, if applicable. Ex. remove MK from MKNAOMI, if NAOMI is a word present in our dictionary (MKNAOMI would be added regardless), default: false
-    //triplets: false,      // silly number of matches, turned off completely for now
+    //triplets: false,      // silly number of matches unless carefully restricted using allowedRots and suitable groups, use with caution
 })
 
 // ex. 2: matching the 3rd line of the puzzle (mirror)

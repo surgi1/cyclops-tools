@@ -106,25 +106,22 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
             if (dictionary.reversed.has(t)) skip = logWord(reverse(t), v, n, [reverse(t)], 'reverse match');
             if (skip) return true;
 
-            if (!tuples || wordLen < 6) return true;
-
-            for (w1len = 3; w1len <= wordLen-3; w1len++) {
-                let w2len = wordLen - w1len;
-                let w1 = t.substr(0, w1len), w2 = t.substr(w1len, w2len);
-                skip = false;
-                if (dictionary.plain.has(w1) && dictionary.plain.has(w2)) skip = logWord(t, v, n, [w1, w2], '', `(${w1len}, ${w2len})`);
-                if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2)) skip = logWord(reverse(t), v, n, [reverse(w1), reverse(w2)], 'reverse match', `(${w2len}, ${w1len})`);
-                if (skip) return true;
+            if (tuples && wordLen >= 6) {
+                for (w1len = 3; w1len <= wordLen-3; w1len++) {
+                    let w2len = wordLen - w1len;
+                    let w1 = t.substr(0, w1len), w2 = t.substr(w1len, w2len);
+                    skip = false;
+                    if (dictionary.plain.has(w1) && dictionary.plain.has(w2)) skip = logWord(t, v, n, [w1, w2], '', `(${w1len}, ${w2len})`);
+                    if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2)) skip = logWord(reverse(t), v, n, [reverse(w1), reverse(w2)], 'reverse match', `(${w2len}, ${w1len})`);
+                    if (skip) return true;
+                }
             }
 
-            /*if (!triplets || wordLen != 9) return true;
-            let w1 = t.substr(0, 3), w2 = t.substr(3, 3), w3 = t.substr(6, 3);
-            if (dictionary.full.has(w1) && dictionary.full.has(w2) && dictionary.full.has(w3)) {
-                let isPlain = dictionary.plain.has(w1) && dictionary.plain.has(w2) && dictionary.plain.has(w3);
-                console.log(isPlain ? t : reverse(t), '[', v, n, ']', !isPlain ? 'reverse match' : '' , 'triplet');
-                found++;
-                return true;
-            }*/
+            if (triplets && wordLen == 9) {
+                let w1 = t.substr(0, 3), w2 = t.substr(3, 3), w3 = t.substr(6, 3);
+                if (dictionary.plain.has(w1) && dictionary.plain.has(w2) && dictionary.plain.has(w3)) logWord(t, v, n, [w1, w2, w3], '', `triplet`);
+                if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2) && dictionary.reversed.has(w3)) logWord(reverse(t), v, n, [w1, w2, w3], 'reverse match', `triplet`);
+            }
         })
     }
 
@@ -139,6 +136,8 @@ let groups = [
     //FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.VZ  // FVFKFJCTV
     //FAMILY.F, FAMILY.B, FAMILY.F, FAMILY.A_REDUCED, FAMILY.F, ['J'], FAMILY.B, FAMILY.B, FAMILY.B_REDUCED  // FVFKFJCTV wide search
     FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.B_REDUCED  // FVFKFJCTV
+
+    //FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], ['F'], ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.B_REDUCED   // FVFKFJCTV triplets matching attempt
 ]
 
 run(groups, {
@@ -147,5 +146,5 @@ run(groups, {
     reversed: true,
     tuples: true,
     unprefixCryptonyms: true,
-    //triplets: false,
+    triplets: false,
 })
