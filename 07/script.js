@@ -8,6 +8,7 @@ const FAMILY = {
     A_REDUCED: ['A', 'K', 'J'], // minus H
     B_REDUCED: ['B', 'C', 'D', 'E', 'P', 'T', 'V', 'Z'], // minus G
     F_REDUCED: ['F', 'L', 'M', 'N', 'S'], // minus X
+    F_MINUS_XL: ['F', 'M', 'N', 'S'], 
     FS: ['F', 'S'],
     VZ: ['V', 'Z'],
     AK: ['A', 'K'],
@@ -131,11 +132,13 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
 
 // describe the word we're looking for by letter groups applicable for individual letters
 let groups = [
-    //FAMILY.F, ['O'], FAMILY.B, FAMILY.F, FAMILY.B, ['I']    // FOBSPI -> VERITY
-    //FAMILY.B, FAMILY.B, ['Y'], ['Y'], FAMILY.B, ['Y']     // TPYYVY -> MIRROR
+    //FAMILY.B, ['O'], ['Y'], ['O'], FAMILY.B, FAMILY.B    // COYOTE
+    //FAMILY.F, ['O'], FAMILY.B, FAMILY.F, FAMILY.B, ['I']    // FOBSPI -> VERIFY
+    //FAMILY.B_REDUCED, FAMILY.B_REDUCED, ['Y'], ['Y'], FAMILY.B, ['Y']     // TPYYVY -> MIRROR
     //FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.VZ  // FVFKFJCTV
     //FAMILY.F, FAMILY.B, FAMILY.F, FAMILY.A_REDUCED, FAMILY.F, ['J'], FAMILY.B, FAMILY.B, FAMILY.B_REDUCED  // FVFKFJCTV wide search
-    FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.B_REDUCED  // FVFKFJCTV
+    //FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], FAMILY.F_REDUCED, ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.B_REDUCED  // FVFKFJCTV
+    FAMILY.F_MINUS_XL, ['V', 'Z'], FAMILY.F_MINUS_XL, ['K'], FAMILY.F_MINUS_XL, ['J'], ['C', 'T'], ['C', 'T'], ['V', 'B']  // FVFKFJCTV
 
     //FAMILY.F_REDUCED, FAMILY.B_REDUCED, FAMILY.F_REDUCED, ['K'], ['F'], ['J'], FAMILY.B_REDUCED, FAMILY.B_REDUCED, FAMILY.B_REDUCED   // FVFKFJCTV triplets matching attempt
 ]

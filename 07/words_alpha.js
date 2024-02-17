@@ -37960,6 +37960,7 @@ bonnock
 bonnocks
 bonnwis
 bono
+bonobo
 bononian
 bonorum
 bonos
