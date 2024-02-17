@@ -44,6 +44,13 @@ const initDictionary = (checkPlain = true, checkReversed = true) => {
     cryptonyms.forEach(v => {
         cia.add(v);
         w.push(v);
+        /*if (prefixes.includes(v.substr(0, 2))) {
+            let s = v.substr(2);
+            if (s.length > 4) {
+                cia.add(s);
+                w.push(s);
+            }
+        }*/
     });
 
     if (checkPlain) w
