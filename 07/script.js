@@ -37,20 +37,22 @@ const vig = (text, key, mode = MODE.ENCODE) => {
     });
 }
 
-const initDictionary = (checkPlain = true, checkReversed = true) => {
+const initDictionary = (checkPlain = true, checkReversed = true, unprefixCryptonyms = false) => {
     let o = new Set(), _o = new Set(), cia = new Set(), w = [...words];
 
     // compile codenames and cryptonyms
     cryptonyms.forEach(v => {
         cia.add(v);
         w.push(v);
-        /*if (prefixes.includes(v.substr(0, 2))) {
-            let s = v.substr(2);
-            if (s.length > 4) {
+        // unpack cryptonyms
+        if (unprefixCryptonyms) {
+            let prefix = prefixes.includes(v.substr(0, 2)),
+                s = v.substr(2);
+            if (w.includes(s) && s.length >= 3) {
                 cia.add(s);
                 w.push(s);
             }
-        }*/
+        }
     });
 
     if (checkPlain) w
@@ -81,8 +83,8 @@ const initVariants = groups => {
     return variants;
 }
 
-const run = (groups, {plain = true, reversed = false, tuples = false, triplets = false, allowedRots = []}) => {
-    let dictionary = initDictionary(plain, reversed);
+const run = (groups, {plain = true, reversed = false, tuples = false, triplets = false, allowedRots = [], unprefixCryptonyms = false}) => {
+    let dictionary = initDictionary(plain, reversed, unprefixCryptonyms);
     let variants = initVariants(groups);
     let found = 0, wordLen = variants[0].length;
 
@@ -110,8 +112,8 @@ const run = (groups, {plain = true, reversed = false, tuples = false, triplets =
                 let w2len = wordLen - w1len;
                 let w1 = t.substr(0, w1len), w2 = t.substr(w1len, w2len);
                 skip = false;
-                if (dictionary.plain.has(w1) && dictionary.plain.has(w2)) skip = logWord(t, v, n, [w1, w2], '', `tuple (${w1len}, ${w2len})`);
-                if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2)) skip = logWord(reverse(t), v, n, [reverse(w1), reverse(w2)], 'reverse match', `tuple (${w1len}, ${w2len})`);
+                if (dictionary.plain.has(w1) && dictionary.plain.has(w2)) skip = logWord(t, v, n, [w1, w2], '', `(${w1len}, ${w2len})`);
+                if (dictionary.reversed.has(w1) && dictionary.reversed.has(w2)) skip = logWord(reverse(t), v, n, [reverse(w1), reverse(w2)], 'reverse match', `(${w2len}, ${w1len})`);
                 if (skip) return true;
             }
 
@@ -144,5 +146,6 @@ run(groups, {
     //plain: false,
     reversed: true,
     tuples: true,
+    unprefixCryptonyms: true,
     //triplets: false,
 })
