@@ -129,6 +129,15 @@ const draw = () => {
         ctx.lineTo(x*zoom[0], 12*zoom[1]);
         ctx.stroke();
     })
+
+    orderNoScale.forEach((o, i) => {
+        ctx.lineWidth = 0.1;
+        ctx.beginPath();
+        ctx.moveTo(0, i*zoom[1]);
+        ctx.lineTo(x*zoom[0], i*zoom[1]);
+        ctx.stroke();
+    })
+
 }
 
 draw();
