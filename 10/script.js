@@ -136,11 +136,15 @@ const draw = () => {
         ctx.moveTo(0, i*zoom[1]);
         ctx.lineTo(x*zoom[0], i*zoom[1]);
         ctx.stroke();
+        ctx.font = "12px serif";
+        ctx.fillText(o, Math.round(window.scrollX), (12-i)*zoom[1]-10);
     })
 
 }
 
 draw();
+
+window.addEventListener("scroll", e => draw());
 
 // rot/vigenere attempts
 //let message = middleNotes.map(v => sorted.indexOf(v)).map(toAscii).join('')
